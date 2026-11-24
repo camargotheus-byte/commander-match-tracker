@@ -1,0 +1,260 @@
+/* ==========================================================================
+   NEO-BRUTALIST POP-FOLDER COMPONENT PRIMITIVES (Sun-Washed Laguna)
+   ========================================================================== */
+
+.nb-card {
+  background-color: #FCF8F0;
+  border: 2px solid #4E3626;
+  border-radius: 16px;
+  box-shadow: 4px 4px 0 #4E3626;
+}
+.nb-card-sm {
+  background-color: #FCF8F0;
+  border: 2px solid #4E3626;
+  border-radius: 12px;
+  box-shadow: 3px 3px 0 #4E3626;
+}
+.nb-subtle {
+  background-color: #F3ECE0;
+  border: 2px solid #4E3626;
+  border-radius: 12px;
+}
+
+/* Iconic Folder Card */
+.nb-folder {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: transform 0.12s ease;
+}
+.nb-folder-clickable {
+  cursor: pointer;
+}
+.nb-folder-clickable:hover {
+  transform: translate(-2px, -2px);
+}
+.nb-folder-clickable:hover .nb-folder-body {
+  box-shadow: 6px 6px 0 #4E3626;
+}
+.nb-folder-clickable:active {
+  transform: translate(2px, 2px);
+}
+.nb-folder-clickable:active .nb-folder-body {
+  box-shadow: 2px 2px 0 #4E3626;
+}
+.nb-folder-tab {
+  width: 46%;
+  max-width: 108px;
+  min-width: 56px;
+  height: 11px;
+  border: 2px solid #4E3626;
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  margin-left: 8px;
+  position: relative;
+  z-index: 2;
+}
+.nb-folder-body {
+  background-color: #FCF8F0;
+  border: 2px solid #4E3626;
+  border-radius: 14px;
+  box-shadow: 4px 4px 0 #4E3626;
+  margin-top: -2px;
+  position: relative;
+  z-index: 1;
+  transition: box-shadow 0.12s ease;
+  flex: 1;
+}
+.nb-icon-box {
+  width: 40px;
+  height: 40px;
+  border: 2px solid #4E3626;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #4E3626;
+}
+
+/* Tactile Buttons & Pills */
+.nb-btn {
+  border: 2px solid #4E3626;
+  border-radius: 12px;
+  box-shadow: 3px 3px 0 #4E3626;
+  background-color: #FCF8F0;
+  color: #4E3626;
+  font-weight: 700;
+  transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.1s ease;
+  cursor: pointer;
+}
+.nb-btn:hover:not(:disabled) {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 #4E3626;
+}
+.nb-btn:active:not(:disabled) {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 #4E3626;
+}
+.nb-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  box-shadow: 1px 1px 0 #4E3626;
+}
+.nb-btn-yellow {
+  background-color: #F1D27A !important;
+  color: #4E3626 !important;
+}
+.nb-btn-green {
+  background-color: #C8CF7A !important;
+  color: #4E3626 !important;
+}
+.nb-btn-pink {
+  background-color: #D7653A !important;
+  color: #F3ECE0 !important;
+}
+.nb-btn-purple {
+  background-color: #E2A64B !important;
+  color: #4E3626 !important;
+}
+.nb-btn-black {
+  background-color: #4E3626 !important;
+  color: #F3ECE0 !important;
+}
+
+.nb-pill {
+  border: 2px solid #4E3626;
+  border-radius: 10px;
+  background-color: #FCF8F0;
+  color: #4E3626;
+  font-weight: 700;
+  transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.1s ease;
+  cursor: pointer;
+}
+.nb-pill:hover {
+  background-color: #F3ECE0;
+}
+.nb-pill-active {
+  background-color: #F1D27A !important;
+  color: #4E3626 !important;
+  box-shadow: 2px 2px 0 #4E3626;
+}
+
+/* Retro Badges */
+.badge-win {
+  background-color: #C8CF7A;
+  color: #4E3626;
+  border: 1.5px solid #4E3626;
+  font-weight: 800;
+}
+.badge-loss {
+  background-color: #D7653A;
+  color: #F3ECE0;
+  border: 1.5px solid #4E3626;
+  font-weight: 800;
+}
+.badge-draw {
+  background-color: #F1D27A;
+  color: #4E3626;
+  border: 1.5px solid #4E3626;
+  font-weight: 800;
+}
+.badge-neutral {
+  background-color: #F3ECE0;
+  color: #4E3626;
+  border: 1.5px solid #4E3626;
+  font-weight: 700;
+}
+.badge-pop-pink {
+  background-color: #D7653A;
+  color: #F3ECE0;
+  border: 1.5px solid #4E3626;
+  font-weight: 800;
+}
+.badge-pop-purple {
+  background-color: #E2A64B;
+  color: #4E3626;
+  border: 1.5px solid #4E3626;
+  font-weight: 800;
+}
+.badge-pop-yellow {
+  background-color: #F1D27A;
+  color: #4E3626;
+  border: 1.5px solid #4E3626;
+  font-weight: 800;
+}
+
+/* Form Controls */
+select,
+input[type="text"],
+input[type="search"],
+input[type="number"],
+input[type="date"],
+input[type="url"],
+textarea {
+  background-color: #FCF8F0;
+  color: #4E3626;
+  border: 2px solid #4E3626;
+  border-radius: 10px;
+  font-weight: 500;
+}
+select:focus,
+input:focus,
+textarea:focus {
+  outline: none;
+  box-shadow: 3px 3px 0 #F1D27A;
+}
+
+/* Floating Tooltip */
+#tooltip {
+  pointer-events: none;
+  position: fixed;
+  z-index: 70;
+  background-color: #FCF8F0;
+  color: #4E3626;
+  border: 2px solid #4E3626;
+  border-radius: 12px;
+  box-shadow: 4px 4px 0 #4E3626;
+}
+
+/* Interactive Rows & Mobile Horizontal Scroll */
+.interactive-row {
+  transition: background-color 0.1s ease;
+}
+.interactive-row:hover {
+  background-color: #F3ECE0;
+}
+
+.scroll-thin::-webkit-scrollbar {
+  height: 7px;
+  width: 7px;
+}
+.scroll-thin::-webkit-scrollbar-thumb {
+  background-color: #4E3626;
+  border-radius: 9999px;
+}
+.scroll-thin::-webkit-scrollbar-track {
+  background-color: #F3ECE0;
+  border-radius: 9999px;
+}
+.hscroll-viewport {
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: #4E3626 #F3ECE0;
+}
+.hscroll-fade-right {
+  background: linear-gradient(to right, rgba(255, 253, 247, 0), rgba(78, 54, 38, 0.16));
+}
+
+/* X-Ray Highlight Pulse */
+@keyframes xrayPop {
+  0% { box-shadow: 0 0 0 4px #F1D27A, 4px 4px 0 #4E3626; }
+  100% { box-shadow: 4px 4px 0 #4E3626; }
+}
+.xray-flash {
+  animation: xrayPop 0.65s ease-out;
+}
+#deck-xray,
+#rival-xray {
+  scroll-margin-top: 16px;
+}
