@@ -6,7 +6,7 @@
 
 <p align="center">
   <strong>The numbers of your legacy.</strong><br/>
-  An interactive, zero-build single-file analytics dashboard for tracking <strong>Magic: The Gathering</strong> matches across 23 format profiles, deck performance, mana identity, pod-size metrics, and head-to-head rivalries — styled with a <strong>Sun-Washed Laguna</strong> neo-brutalist pop-folder aesthetic.
+  An interactive, modular, zero-build analytics dashboard &amp; PWA for tracking <strong>Magic: The Gathering</strong> matches across 23 format profiles, deck performance, mana identity, pod-size metrics, benchmarks, and head-to-head rivalries — styled with a <strong>Sun-Washed Laguna</strong> neo-brutalist pop-folder aesthetic.
 </p>
 
 ---
@@ -22,56 +22,80 @@
   - **Deck Pace** (turn duration) and clickable cross-navigation to **Rival X-Ray**
 - **Multi-Badge System:** Dynamic tags with delayed hover / mobile tap tooltips — `CLASSIC` (5 oldest decks with 5+ games), `ON FIRE` (3+ win streak), `UNDEFEATED` (100% WR with 3+ games), `TOP` (70%+ WR with 10+ games), and `BORROWED`.
 - **Opponents & Meta Breakdown:** Head-to-head **Players** table with **Rival X-Ray** (including 3rd-party pod losses and two-way navigation to Deck X-Ray), **Enemy Commanders** catalog with verified WUBRG/Colorless icons, Scryfall links, and color-combo search, plus a **Deck × Opponent** win-rate heatmap.
+- **Performance & Benchmarks Tab:** Visual 1v1 and 4P Commander skill-tier gauges (*Casual → LGS Regular → Pro / Elite*), automated diagnostics (wins above expected, 1v1 vs. 4P gap, recent 20-game form, turn pace), pod-adjusted **True Deck Efficiency (`Δ vs. Expected`)** ranking, seat-order comparison vs. Playgroup.gg's 600k+ pod dataset, and linked primary sources.
 - **Bilingual UI (PT-BR / English):** Instant top-nav language switcher (`🌐 ▾`) translating all views, tooltips, charts, months, dates, decimals, and `W/L/D` codes, persisted in `localStorage`.
 - **Built-in Match Reporter & Export:** Structured form with calendar date picker, turn duration quick-pills (`5t–12t`), adaptive opponent count per format, autocomplete, paste-to-import parser, format-scoped local queue, Google Sheets TSV output, and filtered **CSV export**.
-- **Mobile-First Table Ergonomics:** Smooth horizontal scrolling with right-edge fade cues and interactive top mini-scrollbars across all data tables.
+- **Mobile-First & PWA Ready:** Horizontal table scroll containers with interactive top mini-scrollbars plus `manifest.webmanifest` for home-screen app installation.
+
+---
+
+## Architecture
+
+This repository follows a strict **Feature-Based Modular Architecture** using native browser ES Modules (`type="module"`) so it deploys with **zero build step** on GitHub Pages while remaining cleanly prepared for future native app packaging (PWA / Capacitor / Vite).
+
+See **[ARCHITECTURE.md](./ARCHITECTURE.md)** for the full directory map, tab/route registry, persistence contracts, coding conventions, and permanent contribution rules.
+
+```text
+commander-match-tracker/
+├── index.html                    # Thin shell loading styles & src/main.js
+├── manifest.webmanifest          # PWA app manifest
+├── logo.svg                      # Official vector brand mark
+├── ARCHITECTURE.md               # Architecture documentation & permanent rules
+├── README.md                     # Project overview & changelog
+├── scripts/
+│   └── build-standalone.py       # Optional zero-dependency standalone HTML bundler
+└── src/
+    ├── main.js                   # Bootstrap & global event wiring
+    ├── styles/                   # Sun-Washed Laguna tokens & Neo-Brutalist primitives
+    ├── core/                     # State store, storage adapter, i18n, formats, dataset & tab registry
+    ├── shared/                   # Reusable UI components, icons, mana identity data & stats utils
+    └── features/                 # Isolated feature slices: overview, decks, opponents, performance, history, report
+```
+
+---
+
+## Running Locally & Deploying
+
+### GitHub Pages (Recommended — Zero Build)
+Push the repository to GitHub and enable **GitHub Pages** on your branch root (`/`). Every ES module in `src/` loads natively over HTTPS.
+
+### Local Development Server
+Because modern browsers block ES module imports over `file://`, start any static local server from the project root:
+
+```bash
+python -m http.server 8080
+```
+
+Then open `http://localhost:8080`.
+
+### Optional Single-File Standalone Bundle (Offline `file://`)
+If you ever need a single self-contained `.html` file:
+
+```bash
+python scripts/build-standalone.py dist/commander-match-tracker-standalone.html
+```
 
 ---
 
 ## Changelog
 
+### Version 1.2.0 (Self-Contained Personal Data Hub & Backup)
+- **Unified Personal Hub (`cmt_hub_matches_v1`):** Automatically migrates the 212 initial Google Sheets records into a full local CRUD hub — log, edit, or delete any match directly inside the app without needing to paste reports into chat.
+- **Data Hub & Versioned Backup (`.json`):** Added a top-nav Data Hub modal with 1-click **Export Full Backup (`.json`)** (`schemaVersion: 1`, containing all formats, matches, favorites, commanders/partners, mana colors, decklists, and styles) and **Import / Restore Backup (`.json`)** for cross-device transfer and future cloud migration (Supabase / GitHub API).
+- **Desktop Auto-Save File Link:** On desktop Chrome/Edge, link a `.json` file inside Google Drive, OneDrive, or Documents using the File System Access API so every match or edit auto-saves directly to your own file.
+- **Inline Match Editing & Deletion:** Added direct `✎` edit and 2-click `×` delete controls on every match row in the **History** tab.
+
+### Version 1.1.0 (Modular Architecture & Performance Tab)
+- **Feature-Based Modular Refactor:** Split the 5,329-line monolith into 42 clean native ES modules organized under `src/core/`, `src/shared/`, `src/styles/`, and `src/features/` (`overview`, `decks`, `opponents`, `performance`, `history`, `report`) with zero circular or cross-feature dependencies.
+- **App & PWA Readiness:** Added `manifest.webmanifest`, centralized persistence in `src/core/storage/storage.service.js`, added `scripts/build-standalone.py` for optional single-file export, and created permanent governance docs in `ARCHITECTURE.md`.
+- **Performance & Benchmarks Tab:** Added 1v1 and 4P Commander skill gauges, automated personalized insights, pod-adjusted `Δ vs. Expected` deck efficiency ranking, Playgroup.gg seat-order comparison, and linked primary sources.
+
 ### Version 1.0.1
-- **Brand Identity & Palette:**
-  - Created custom vector brand logo (`logo.svg`) depicting 3 fanned cards with an inner trend chart on the front card; applied to the top-left header badge and browser favicon.
-  - Refreshed the entire UI to the **Sun-Washed Laguna** color palette (*Seashell, Light Seashell, Flax Linen, Palm Shadow, Key Lime, Butter Sun, Golden Hour, Tangerine, Aperol, Espresso*).
-  - Updated hero tagline (`The numbers of your legacy.` / `Seu legado em números.`).
-- **Multi-Format Profiles:**
-  - Replaced the static `MTG COMMANDER · 2026` badge with a categorized dropdown supporting **23 MTG formats** with per-format match counters.
-  - Added full **Profile Isolation** so Commander, Pauper, Pioneer, Modern, Standard, Draft, and other formats maintain independent dashboards, histories, local queues, ID prefixes, and default opponent layouts.
-- **Mana Identity Icons & Scryfall Links:**
-  - Added 5 minimalist SVG mana icons (**W** Sun, **U** Droplet, **B** Skull, **R** Flame, **G** Tree) plus a **Colorless (`C`)** diamond icon across all **25 user decks** (editable in Deck X-Ray) and all **126 enemy commanders** (in *Opponents → Enemy Commanders* and *Rival X-Ray*).
-  - Added **Commander Editor** with **Partner toggle** inside Deck X-Ray and clickable **Scryfall** (`↗`) card links across user and enemy commanders.
-- **Dates, Turn Duration & Decklist Trajectory:**
-  - Added calendar **Date Picker** (`Data`) and **Turn Duration** (`Turnos`) tracking across Match Reporter, Overview, Deck X-Ray, History, CSV/TSV export, and Google Sheets schema.
-  - Added **Decklist Link**, **Last Update Date**, and **Performance Trajectory** chart with before/after comparison inside Deck X-Ray.
-- **Bilingual Support & Mobile UX:**
-  - Added full **Português (BR) / English** dropdown toggle persisted in `localStorage`.
-  - Added mobile-friendly horizontal table containers with interactive top mini-scrollbars.
-  - Enabled two-way cross-navigation between **Deck X-Ray** and **Rival X-Ray**, and removed truncated deck/commander names across views.
-  - Removed the deprecated `Download HTML` button and the Opponents notice banner.
-- **Data Cleanup:**
-  - Unified `Rafa` and `Rafael` player records, and corrected commander names (`Osgir, the Reconstructor`, `Kefka, Court Mage // Kefka, Ruler of Ruin`, and `Muddle, the Ever-Changing`) across both the dashboard and Google Sheets.
+- **Brand Identity & Palette:** Created custom vector logo (`logo.svg`), refreshed UI to **Sun-Washed Laguna**, and updated hero tagline.
+- **Multi-Format Profiles:** Replaced `MTG COMMANDER · 2026` badge with a 23-format profile switcher with full data isolation.
+- **Mana Identity Icons & Scryfall Links:** Added 5 minimalist WUBRG icons + Colorless diamond across all 25 user decks and 126 enemy commanders, plus Commander Editor with Partner toggle and Scryfall links.
+- **Dates, Turn Duration & Decklist Trajectory:** Added calendar date picker, turn duration analytics, decklist URL, update date, and before/after performance trajectory chart.
+- **Bilingual Support, Mobile UX & Data Cleanup:** Added PT-BR/EN toggle, mobile table mini-scrollbars, two-way X-Ray cross-navigation, unified `Rafael`, and corrected `Osgir`, `Kefka`, and `Muddle`.
 
 ### Version 1.0.0
-- Initial standalone dashboard release synced with the 2026 Commander Google Sheets dataset (212 matches), Neo-Brutalist Pop-Folder UI, Overview KPIs, Deck/Rival X-Rays, Wilson ranking, customizable deck icons/colors, favorites, and built-in Match Reporter.
-
----
-
-## Project Structure
-
-```text
-commander-match-tracker/
-├── index.html   # Standalone single-file dashboard (GitHub Pages entry point)
-├── logo.svg     # Standalone vector brand mark (Sun-Washed Laguna)
-└── README.md    # Project documentation & changelog
-```
-
-## Tech Stack
-
-- **Zero-build standalone HTML** (Vanilla JavaScript + custom SVG charts/icons + Tailwind CSS)
-- **Data persistence:** Embedded Google Sheets snapshot + `localStorage` for format profiles, pending matches, favorites, deck metadata/commanders, custom icons/colors, and language preference
-- **Hosting:** Ready for GitHub Pages out of the box (no backend or build pipeline required)
-
-## Running Locally
-
-Open `index.html` directly in any modern browser — no installation or build step required.
+- Initial standalone dashboard release synced with the 2026 Commander Google Sheets dataset (212 matches).

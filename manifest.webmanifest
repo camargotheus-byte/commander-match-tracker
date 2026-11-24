@@ -1,0 +1,19 @@
+{
+  "name": "MTG Match Tracker — Retro Edition",
+  "short_name": "MTG Tracker",
+  "description": "The numbers of your legacy. Track Magic: The Gathering matches across 23 format profiles, decks, mana identity, rivals, and performance benchmarks.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#F3ECE0",
+  "theme_color": "#F1D27A",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "./logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
