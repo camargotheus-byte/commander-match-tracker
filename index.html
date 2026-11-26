@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#F1D27A" />
+  <title>Commander (EDH) — Match Tracker</title>
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="icon" type="image/svg+xml" href="./logo.svg" />
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <link rel="stylesheet" href="./src/styles/tokens.css" />
+  <link rel="stylesheet" href="./src/styles/components.css" />
+</head>
+<body class="antialiased min-h-screen overflow-x-hidden">
+  <!-- Floating Neo-Brutalist Tooltip -->
+  <div id="tooltip" class="hidden px-3 py-2 text-xs max-w-xs leading-relaxed"></div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="hidden fixed bottom-5 right-5 z-50 nb-card-sm px-4 py-2.5 text-xs font-extrabold flex items-center gap-2"></div>
+
+  <!-- Local Data Hub & Backup Modal -->
+  <div id="data-hub-modal" class="hidden"></div>
+  <input id="input-import-backup-json" type="file" accept=".json,application/json" class="hidden" />
+
+  <!-- Decorative Top Accent Bar (Adapts to Active MTG Theme) -->
+  <div class="w-full h-2.5 flex border-b-2 border-[#4E3626]">
+    <div class="flex-1 theme-bar-1"></div>
+    <div class="flex-1 theme-bar-2"></div>
+    <div class="flex-1 theme-bar-3"></div>
+    <div class="flex-1 theme-bar-4"></div>
+    <div class="flex-1 theme-bar-5"></div>
+    <div class="flex-1 theme-bar-6"></div>
+    <div class="flex-1 theme-bar-7"></div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-5 space-y-5">
+    <!-- Top Header + Navigation -->
+    <header class="space-y-4">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+        <!-- Brand & Punchy Title -->
+        <div class="flex items-start gap-3">
+          <div class="nb-icon-box !w-12 !h-12 !rounded-xl bg-[#F1D27A] shadow-[3px_3px_0_#4E3626] mt-0.5" aria-hidden="true">
+            <svg width="36" height="36" viewBox="0 0 40 40" fill="none" stroke="#4E3626" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="11.8" y="9.2" width="15.2" height="21.6" rx="2.8" fill="#E2A64B" stroke-width="2.1" transform="rotate(-34 19 29.6)"/>
+              <rect x="14" y="7.6" width="15.6" height="22" rx="2.8" fill="#F3ECE0" stroke-width="2.1" transform="rotate(-10 20 29.6)"/>
+              <g transform="rotate(11 24.5 29)">
+                <rect x="17.6" y="7.4" width="16.8" height="23" rx="2.8" fill="#FCF8F0" stroke-width="2.1"/>
+                <polyline points="20.2,21.8 22.7,15.6 25.1,21.2 27.6,15.6 29.8,21.2 32.2,16.2" fill="none" stroke-width="1.75"/>
+                <circle cx="20.2" cy="21.8" r="1.25" fill="#4E3626" stroke="none"/>
+                <circle cx="25.1" cy="21.2" r="1.25" fill="#4E3626" stroke="none"/>
+                <circle cx="29.8" cy="21.2" r="1.25" fill="#4E3626" stroke="none"/>
+                <circle cx="32.2" cy="16.2" r="1.25" fill="#4E3626" stroke="none"/>
+              </g>
+            </svg>
+          </div>
+          <div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <div id="format-menu-wrap" class="relative">
+                <button id="btn-format-menu" type="button" aria-haspopup="menu" aria-expanded="false"
+                  data-tip="Selecionar formato de Magic: The Gathering"
+                  class="px-2.5 py-0.5 rounded-md text-xs badge-pop-purple inline-flex items-center gap-1.5 cursor-pointer hover:brightness-95 active:translate-y-px transition">
+                  <span id="format-label">MTG COMMANDER</span>
+                  <svg id="format-chevron" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" class="transition-transform" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div id="format-dropdown" role="menu" class="hidden absolute left-0 mt-2 w-72 max-h-80 overflow-y-auto nb-card-sm p-2 z-50 space-y-2"></div>
+              </div>
+              <div id="player-name-wrap" class="inline-flex items-center"></div>
+              <span id="header-scope" class="text-xs font-semibold text-muted">
+                MTG Match Tracker · Nenhuma partida registrada ainda
+              </span>
+            </div>
+            <h1 id="hero-tagline" class="text-2xl sm:text-3xl font-black tracking-tight leading-none mt-1.5 text-[#4E3626]">
+              Seu legado em números.
+            </h1>
+          </div>
+        </div>
+
+        <!-- Tactile Navigation Buttons -->
+        <nav class="flex items-center gap-2 flex-wrap" role="tablist" aria-label="Seções do painel">
+          <button class="nb-btn px-3 py-2 text-xs inline-flex items-center gap-1.5" data-tab="overview" role="tab" aria-selected="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            <span id="nav-lbl-overview">Visão Geral</span>
+          </button>
+          <button class="nb-btn px-3 py-2 text-xs inline-flex items-center gap-1.5" data-tab="decks" role="tab" aria-selected="false">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            <span id="nav-lbl-decks">Decks</span>
+          </button>
+          <button class="nb-btn px-3 py-2 text-xs inline-flex items-center gap-1.5" data-tab="opponents" role="tab" aria-selected="false">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <span id="nav-lbl-opponents">Oponentes</span>
+          </button>
+          <button class="nb-btn px-3 py-2 text-xs inline-flex items-center gap-1.5" data-tab="performance" role="tab" aria-selected="false">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+            <span id="nav-lbl-performance">Performance</span>
+          </button>
+          <button class="nb-btn px-3 py-2 text-xs inline-flex items-center gap-1.5" data-tab="history" role="tab" aria-selected="false">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span id="nav-lbl-history">Histórico</span>
+          </button>
+          <button class="nb-btn nb-btn-yellow px-3.5 py-2 text-xs inline-flex items-center gap-1.5" data-tab="report" role="tab" aria-selected="false">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <span id="nav-lbl-report">Reportar</span>
+            <span id="pending-tab-badge" class="hidden px-1.5 py-0.2 rounded-md text-xs badge-pop-pink">0</span>
+          </button>
+          <button id="btn-data-hub" type="button" aria-haspopup="dialog" aria-expanded="false" aria-label="Hub de Dados / Backup"
+            data-tip="Hub de Dados: Exportar, Importar ou vincular backup (.json)"
+            class="nb-btn px-2.5 py-2 text-xs inline-flex items-center gap-1 relative">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+            <span id="data-hub-dot" class="hidden w-2 h-2 rounded-full bg-[#4A5530] border border-[#FCF8F0] absolute -top-0.5 -right-0.5"></span>
+          </button>
+          <div id="theme-menu-wrap" class="relative">
+            <button id="btn-theme-menu" type="button" aria-haspopup="menu" aria-expanded="false" aria-label="Tema / Theme"
+              data-tip="Alterar tema de cores (Padrão ou Guildas de Ravnica)"
+              class="nb-btn px-2.5 py-2 text-xs inline-flex items-center gap-1">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div id="theme-dropdown" role="menu" class="hidden absolute right-0 mt-2 w-64 max-h-96 overflow-y-auto scroll-thin nb-card-sm p-2 z-50 space-y-1"></div>
+          </div>
+          <div id="lang-menu-wrap" class="relative">
+            <button id="btn-lang-menu" type="button" aria-haspopup="menu" aria-expanded="false" aria-label="Idioma / Language"
+              data-tip="Alterar idioma (Português BR / English)"
+              class="nb-btn px-2.5 py-2 text-xs inline-flex items-center gap-1">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div id="lang-dropdown" role="menu" class="hidden absolute right-0 mt-2 w-44 nb-card-sm p-1.5 z-50 space-y-1">
+              <button type="button" role="menuitem" data-set-lang="pt" class="w-full px-2.5 py-1.5 rounded-lg text-xs font-extrabold flex items-center justify-between hover:bg-[#F3ECE0] cursor-pointer">
+                <span class="inline-flex items-center gap-2"><span class="px-1.5 py-0.2 rounded badge-neutral font-mono">PT</span><span>Português (BR)</span></span>
+                <span data-lang-check="pt" class="font-black">✓</span>
+              </button>
+              <button type="button" role="menuitem" data-set-lang="en" class="w-full px-2.5 py-1.5 rounded-lg text-xs font-extrabold flex items-center justify-between hover:bg-[#F3ECE0] cursor-pointer">
+                <span class="inline-flex items-center gap-2"><span class="px-1.5 py-0.2 rounded badge-neutral font-mono">EN</span><span>English</span></span>
+                <span data-lang-check="en" class="font-black hidden">✓</span>
+              </button>
+            </div>
+          </div>
+        </nav>
+      </div>
+
+      <!-- Signature Quick-Action Bar -->
+      <div id="global-filter-bar" class="space-y-2.5">
+        <div class="flex items-stretch gap-2.5">
+          <div class="flex-1 nb-card-sm flex items-center px-3 gap-2">
+            <span class="font-black text-base text-[#4E3626] select-none">#</span>
+            <input id="quick-search" type="search" placeholder="Busca rápida: digite um deck, jogador, comandante ou CMD-001..." class="w-full py-2.5 text-xs bg-transparent !border-0 !shadow-none focus:!shadow-none" />
+            <button id="btn-toggle-fav-filter" class="px-2.5 py-1 rounded-lg text-xs font-bold border-2 border-[#4E3626] bg-[#F3ECE0] hover:bg-[#F1D27A] cursor-pointer shrink-0 inline-flex items-center gap-1" data-tip="Filtrar apenas decks favoritados">
+              <span id="fav-filter-star">★</span>
+              <span id="lbl-fav-quick" class="hidden sm:inline">Favoritos</span>
+              <span id="fav-count-badge" class="tabular-nums">(0)</span>
+            </button>
+            <button id="btn-toggle-filters" class="px-2.5 py-1 rounded-lg text-xs font-bold border-2 border-[#4E3626] bg-[#F3ECE0] hover:bg-[#F1D27A] cursor-pointer shrink-0 inline-flex items-center gap-1">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#4E3626" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+              <span id="lbl-filters-quick">Filtros</span>
+            </button>
+          </div>
+          <button id="btn-add-quick" data-tab="report" data-tip="Reportar nova partida" class="nb-btn nb-btn-yellow w-12 shrink-0 flex items-center justify-center text-xl font-black" aria-label="Reportar nova partida">
+            +
+          </button>
+        </div>
+
+        <!-- Collapsible Structured Filters Strip -->
+        <section id="filters-drawer" class="nb-card-sm p-3.5 space-y-3">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2.5 items-end">
+            <div>
+              <label id="lbl-f-month" for="f-month" class="block text-xs font-extrabold mb-1">Mês</label>
+              <select id="f-month" class="w-full px-2.5 py-1.5 text-xs"></select>
+            </div>
+            <div>
+              <label id="lbl-f-deck" for="f-deck" class="block text-xs font-extrabold mb-1">Meu Deck</label>
+              <select id="f-deck" class="w-full px-2.5 py-1.5 text-xs"></select>
+            </div>
+            <div>
+              <label id="lbl-f-player" for="f-player" class="block text-xs font-extrabold mb-1">Oponente (Jogador)</label>
+              <select id="f-player" class="w-full px-2.5 py-1.5 text-xs"></select>
+            </div>
+            <div>
+              <span id="lbl-f-pod" class="block text-xs font-extrabold mb-1">Tamanho da Mesa</span>
+              <div id="f-pod-group" class="grid grid-cols-4 gap-1">
+                <button id="pod-pill-all" data-pod="all" class="pod-pill nb-pill px-2 py-1.5 text-xs nb-pill-active">Todas</button>
+                <button data-pod="2" class="pod-pill nb-pill px-2 py-1.5 text-xs">1v1</button>
+                <button data-pod="3" class="pod-pill nb-pill px-2 py-1.5 text-xs">3P</button>
+                <button data-pod="4+" class="pod-pill nb-pill px-2 py-1.5 text-xs">4+P</button>
+              </div>
+            </div>
+            <div>
+              <span id="lbl-f-origin" class="block text-xs font-extrabold mb-1">Origem do Deck</span>
+              <div id="f-origin-group" class="grid grid-cols-3 gap-1">
+                <button id="origin-pill-all" data-origin="all" class="origin-pill nb-pill px-2 py-1.5 text-xs nb-pill-active">Todos</button>
+                <button id="origin-pill-own" data-origin="own" class="origin-pill nb-pill px-2 py-1.5 text-xs">Próprios</button>
+                <button id="origin-pill-borrowed" data-origin="borrowed" class="origin-pill nb-pill px-2 py-1.5 text-xs">Emprest.</button>
+              </div>
+            </div>
+          </div>
+          <div id="active-filters-bar" class="hidden flex items-center justify-between gap-2 pt-2.5 border-t-2 border-[#4E3626] flex-wrap">
+            <div id="active-filter-chips" class="flex items-center gap-1.5 flex-wrap text-xs"></div>
+            <button id="btn-reset-filters" class="px-2.5 py-1 rounded-lg text-xs font-extrabold badge-loss cursor-pointer hover:opacity-90">
+              Limpar filtros ×
+            </button>
+          </div>
+        </section>
+      </div>
+    </header>
+
+    <!-- Optional Demo Mode Banner -->
+    <div id="demo-banner" class="hidden"></div>
+
+    <!-- KPI Folder Cards Strip -->
+    <section id="kpi-strip" class="grid grid-cols-2 lg:grid-cols-5 gap-3.5"></section>
+
+    <!-- Main View Container -->
+    <main id="view-root" class="space-y-5"></main>
+  </div>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
