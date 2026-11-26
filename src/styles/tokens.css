@@ -1,0 +1,271 @@
+/* ==========================================================================
+   MTG MATCH TRACKER — RETRO PALETTE TOKENS (Default + 10 Ravnica Guilds)
+   Theme variables are scoped cleanly to body & body[data-theme="..."].
+   ========================================================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+/* Default: Sun-Washed Laguna */
+body {
+  --t-bg: #F3ECE0;
+  --t-surface: #FCF8F0;
+  --t-ink: #4E3626;
+  --t-muted: #745A46;
+  --t-divider: #DCCBAE;
+  --t-dot: rgba(78, 54, 38, 0.08);
+  --t-accent: #F1D27A;
+  --t-accent-ink: #4E3626;
+  --t-accent2: #E2A64B;
+  --t-accent2-ink: #4E3626;
+  --t-sel: #F6EDD6;
+  --t-bar-1: #4A5530;
+  --t-bar-2: #C8CF7A;
+  --t-bar-3: #F1D27A;
+  --t-bar-4: #E2A64B;
+  --t-bar-5: #EC8B33;
+  --t-bar-6: #D7653A;
+  --t-bar-7: #4E3626;
+
+  background-color: var(--t-bg);
+  color: var(--t-ink);
+  margin: 0;
+  padding: 0;
+  background-image: radial-gradient(var(--t-dot) 1px, transparent 1px);
+  background-size: 20px 20px;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+/* Azorius (White / Blue) */
+body[data-theme="azorius"] {
+  --t-bg: #EAF1F7;
+  --t-surface: #FAFBFD;
+  --t-ink: #1C3144;
+  --t-muted: #4B637A;
+  --t-divider: #C5D6E6;
+  --t-dot: rgba(28, 49, 68, 0.08);
+  --t-accent: #9EC5E5;
+  --t-accent-ink: #1C3144;
+  --t-accent2: #F4E4B6;
+  --t-accent2-ink: #1C3144;
+  --t-sel: #DFECF7;
+  --t-bar-1: #1C3144;
+  --t-bar-2: #4A78A8;
+  --t-bar-3: #9EC5E5;
+  --t-bar-4: #DCE9F5;
+  --t-bar-5: #F4E4B6;
+  --t-bar-6: #D8BF7A;
+  --t-bar-7: #1C3144;
+}
+
+/* Dimir (Blue / Black) */
+body[data-theme="dimir"] {
+  --t-bg: #E7ECF2;
+  --t-surface: #F7F9FC;
+  --t-ink: #1B2333;
+  --t-muted: #4C586E;
+  --t-divider: #C4CEDC;
+  --t-dot: rgba(27, 35, 51, 0.09);
+  --t-accent: #8EA4C4;
+  --t-accent-ink: #1B2333;
+  --t-accent2: #3A4E6C;
+  --t-accent2-ink: #F4F7FB;
+  --t-sel: #DCE4F0;
+  --t-bar-1: #141A26;
+  --t-bar-2: #2C3D58;
+  --t-bar-3: #4A668C;
+  --t-bar-4: #8EA4C4;
+  --t-bar-5: #5E6A80;
+  --t-bar-6: #323A4A;
+  --t-bar-7: #1B2333;
+}
+
+/* Rakdos (Black / Red) */
+body[data-theme="rakdos"] {
+  --t-bg: #F4EAE8;
+  --t-surface: #FDF9F8;
+  --t-ink: #2E1618;
+  --t-muted: #694448;
+  --t-divider: #DEC5C1;
+  --t-dot: rgba(46, 22, 24, 0.08);
+  --t-accent: #E66E5E;
+  --t-accent-ink: #FFF8F6;
+  --t-accent2: #47262B;
+  --t-accent2-ink: #FAF0EE;
+  --t-sel: #F6DDD9;
+  --t-bar-1: #1F1113;
+  --t-bar-2: #47262B;
+  --t-bar-3: #8F2D2A;
+  --t-bar-4: #D4473A;
+  --t-bar-5: #E66E5E;
+  --t-bar-6: #F2A58C;
+  --t-bar-7: #2E1618;
+}
+
+/* Gruul (Red / Green) */
+body[data-theme="gruul"] {
+  --t-bg: #F3EFE6;
+  --t-surface: #FCFBF7;
+  --t-ink: #322419;
+  --t-muted: #655240;
+  --t-divider: #D9CEBC;
+  --t-dot: rgba(50, 36, 25, 0.08);
+  --t-accent: #E5894B;
+  --t-accent-ink: #2B1B10;
+  --t-accent2: #8EB56B;
+  --t-accent2-ink: #233018;
+  --t-sel: #EFE3CE;
+  --t-bar-1: #3E592C;
+  --t-bar-2: #6B8F4E;
+  --t-bar-3: #8EB56B;
+  --t-bar-4: #E8C074;
+  --t-bar-5: #E5894B;
+  --t-bar-6: #C44D2B;
+  --t-bar-7: #322419;
+}
+
+/* Selesnya (White / Green) */
+body[data-theme="selesnya"] {
+  --t-bg: #EDF3E8;
+  --t-surface: #FAFDF8;
+  --t-ink: #233824;
+  --t-muted: #4F6950;
+  --t-divider: #C9DAC0;
+  --t-dot: rgba(35, 56, 36, 0.08);
+  --t-accent: #A7CE86;
+  --t-accent-ink: #233824;
+  --t-accent2: #F2E4B5;
+  --t-accent2-ink: #233824;
+  --t-sel: #E1EED6;
+  --t-bar-1: #233824;
+  --t-bar-2: #4E7A4B;
+  --t-bar-3: #7FAD66;
+  --t-bar-4: #A7CE86;
+  --t-bar-5: #E2ECCB;
+  --t-bar-6: #F2E4B5;
+  --t-bar-7: #233824;
+}
+
+/* Orzhov (White / Black) */
+body[data-theme="orzhov"] {
+  --t-bg: #EFECE9;
+  --t-surface: #FBF9F7;
+  --t-ink: #231E26;
+  --t-muted: #5B5260;
+  --t-divider: #D4CDD6;
+  --t-dot: rgba(35, 30, 38, 0.08);
+  --t-accent: #D7C49E;
+  --t-accent-ink: #231E26;
+  --t-accent2: #4A4052;
+  --t-accent2-ink: #FAF7F2;
+  --t-sel: #E9E2D4;
+  --t-bar-1: #1E1A22;
+  --t-bar-2: #4A4052;
+  --t-bar-3: #7A6E82;
+  --t-bar-4: #C7BFC9;
+  --t-bar-5: #ECE4D4;
+  --t-bar-6: #D7C49E;
+  --t-bar-7: #231E26;
+}
+
+/* Izzet (Blue / Red) */
+body[data-theme="izzet"] {
+  --t-bg: #EDEFF6;
+  --t-surface: #FAFAFD;
+  --t-ink: #1F2544;
+  --t-muted: #525A7A;
+  --t-divider: #C9CEE2;
+  --t-dot: rgba(31, 37, 68, 0.08);
+  --t-accent: #6BA8E5;
+  --t-accent-ink: #162238;
+  --t-accent2: #EC7755;
+  --t-accent2-ink: #FFF8F5;
+  --t-sel: #DFE8F6;
+  --t-bar-1: #1F2544;
+  --t-bar-2: #3662A8;
+  --t-bar-3: #6BA8E5;
+  --t-bar-4: #A2C7EE;
+  --t-bar-5: #F2A87B;
+  --t-bar-6: #EC7755;
+  --t-bar-7: #C44536;
+}
+
+/* Golgari (Black / Green) */
+body[data-theme="golgari"] {
+  --t-bg: #ECEEE8;
+  --t-surface: #F9FAF6;
+  --t-ink: #222B1E;
+  --t-muted: #53614D;
+  --t-divider: #CBD1C3;
+  --t-dot: rgba(34, 43, 30, 0.09);
+  --t-accent: #8FB06A;
+  --t-accent-ink: #1E2818;
+  --t-accent2: #48543C;
+  --t-accent2-ink: #F5F7F0;
+  --t-sel: #E2E9D8;
+  --t-bar-1: #181F16;
+  --t-bar-2: #33402A;
+  --t-bar-3: #48543C;
+  --t-bar-4: #6D8A4E;
+  --t-bar-5: #8FB06A;
+  --t-bar-6: #B5C496;
+  --t-bar-7: #222B1E;
+}
+
+/* Boros (White / Red) */
+body[data-theme="boros"] {
+  --t-bg: #F7EEEB;
+  --t-surface: #FEFAF8;
+  --t-ink: #3D1C19;
+  --t-muted: #744A45;
+  --t-divider: #E4CBC4;
+  --t-dot: rgba(61, 28, 25, 0.08);
+  --t-accent: #EE7B5C;
+  --t-accent-ink: #FFF9F7;
+  --t-accent2: #F5D88E;
+  --t-accent2-ink: #3D1C19;
+  --t-sel: #F7E1D9;
+  --t-bar-1: #3D1C19;
+  --t-bar-2: #B83D2D;
+  --t-bar-3: #EE7B5C;
+  --t-bar-4: #F5B28C;
+  --t-bar-5: #F5D88E;
+  --t-bar-6: #FAF0D7;
+  --t-bar-7: #3D1C19;
+}
+
+/* Simic (Blue / Green) */
+body[data-theme="simic"] {
+  --t-bg: #E7F3F0;
+  --t-surface: #F7FCFA;
+  --t-ink: #173332;
+  --t-muted: #446866;
+  --t-divider: #BEDBD5;
+  --t-dot: rgba(23, 51, 50, 0.08);
+  --t-accent: #6EC2B5;
+  --t-accent-ink: #132B2A;
+  --t-accent2: #9BD08F;
+  --t-accent2-ink: #173324;
+  --t-sel: #D8EEE9;
+  --t-bar-1: #173332;
+  --t-bar-2: #2A6E72;
+  --t-bar-3: #4DA19B;
+  --t-bar-4: #6EC2B5;
+  --t-bar-5: #9BD08F;
+  --t-bar-6: #5D9C59;
+  --t-bar-7: #173332;
+}
+
+.theme-bar-1 { background-color: var(--t-bar-1); }
+.theme-bar-2 { background-color: var(--t-bar-2); }
+.theme-bar-3 { background-color: var(--t-bar-3); }
+.theme-bar-4 { background-color: var(--t-bar-4); }
+.theme-bar-5 { background-color: var(--t-bar-5); }
+.theme-bar-6 { background-color: var(--t-bar-6); }
+.theme-bar-7 { background-color: var(--t-bar-7); }
+
+.text-muted { color: var(--t-muted); }
+.wr-high { color: #3D6B2E; }
+.wr-mid { color: #B06A1E; }
+.wr-low { color: #B94B24; }
