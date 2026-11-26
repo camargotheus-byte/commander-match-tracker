@@ -1,0 +1,24 @@
+/* ==========================================================================
+   SUN-WASHED LAGUNA PALETTE & BASE SURFACE TOKENS
+   Seashell #F3ECE0 | Light Seashell #FCF8F0 | Flax Linen #DCCBAE
+   Palm Shadow #4A5530 | Key Lime #C8CF7A | Butter Sun #F1D27A
+   Golden Hour #E2A64B | Tangerine #EC8B33 | Aperol #D7653A | Espresso #4E3626
+   ========================================================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #F3ECE0;
+  color: #4E3626;
+  margin: 0;
+  padding: 0;
+  background-image: radial-gradient(rgba(78, 54, 38, 0.08) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.text-muted { color: #745A46; }
+.wr-high { color: #4A5530; }
+.wr-mid { color: #B06A1E; }
+.wr-low { color: #B94B24; }
